@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import  Home  from "./Routes/Home";
-import  Login  from "./Routes/Login";
-import  Detail  from "./Routes/Detail";
+import Home from "./Routes/Home";
+import Login from "./Routes/Login";
+import Detail from "./Routes/Detail";
 import "./index.css";
-import  App  from "./App";
+import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./hooks/useTheme"
 import { Navigate } from "react-router-dom";
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-    
+
       <RouterProvider router={router} />
 
     </ThemeProvider>
