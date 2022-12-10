@@ -9,7 +9,8 @@ import "./index.css";
 import  App  from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./hooks/useTheme"
-import { Navigate } from "react-router-dom";
+//import { Navigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 
 
@@ -21,9 +22,21 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
-      {
+      /* {
         path: '',
         element: <Navigate to='home' />,
+      }, */
+      /* {
+        path: '*',
+        element: <Home />,
+      }, */
+      {
+        path: '',
+        loader: () => redirect('/home')
+      },
+      {
+        path: '*',
+        loader: () => redirect('https://http.cat/404')
       },
       {
         path: "home",
