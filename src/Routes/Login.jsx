@@ -9,7 +9,7 @@ import {
 
 const Contact = () => {
 
-  const Private = ({ children }) => {
+  /*const Private = ({ children }) => {
     const { authenticated } = useContext(AuthContext);
 
     if (!authenticated) {
@@ -19,13 +19,12 @@ const Contact = () => {
     return children;
 
 
-  };
+  };*/
   return (
     <AuthProvider>
       <h1>Login Form</h1>
       <LoginForm />
     </AuthProvider>
-
 
   );
 };

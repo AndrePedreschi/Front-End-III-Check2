@@ -26,8 +26,7 @@ const LoginForm = () => {
       <div
         className={`text-center card container ${styles.card}`}
       >
-        <div className={`card-body ${styles.CardBody}`}>
-          
+        <div className={`card-body ${styles.CardBody}`}>          
           <form onSubmit={handleSubmit}>
             <input
               className={`form-control ${styles.inputSpacing}`}
