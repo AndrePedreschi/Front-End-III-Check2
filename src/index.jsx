@@ -10,8 +10,7 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./hooks/useTheme"
 import { Navigate } from "react-router-dom";
-
-
+import { AuthContext } from "./contexts/auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 //Lembre-se de configurar suas rotas e seu contexto aqui

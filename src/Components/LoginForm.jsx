@@ -1,7 +1,10 @@
 import styles from "./Form.module.css";
-import { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../contexts/auth";
 
 const LoginForm = () => {
+
+  const { authenticated, login } = useContext(AuthContext);
 
   const [loginUser, setLoginUser] = useState("");
   const [password, setPassword] = useState("");
@@ -9,19 +12,12 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submit", { loginUser, password });
+    login(loginUser, password);
 
-    //Nesse handlesubmit você deverá usar o preventDefault,
-    //enviar os dados do formulário e enviá-los no corpo da requisição 
-    //para a rota da api que faz o login /auth
-    //lembre-se que essa rota vai retornar um Bearer Token e o mesmo deve ser salvo
-    //no localstorage para ser usado em chamadas futuras
-    //Com tudo ocorrendo corretamente, o usuário deve ser redirecionado a página principal,com react-router
-    //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
+    
   };
 
-  function loginSucess() {
-
-  }
+ 
 
   return (
     <>
@@ -31,6 +27,7 @@ const LoginForm = () => {
         className={`text-center card container ${styles.card}`}
       >
         <div className={`card-body ${styles.CardBody}`}>
+          
           <form onSubmit={handleSubmit}>
             <input
               className={`form-control ${styles.inputSpacing}`}
@@ -49,7 +46,7 @@ const LoginForm = () => {
               value={password} onChange={(e) => setPassword(e.target.value)}
 
             />
-            <button onClick={loginSucess} className="btn btn-primary" type="submit">
+            <button className="btn btn-primary" type="submit">
               Enviar
             </button>
           </form>
@@ -60,3 +57,11 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+//Nesse handlesubmit você deverá usar o preventDefault,
+    //enviar os dados do formulário e enviá-los no corpo da requisição 
+    //para a rota da api que faz o login /auth
+    //lembre-se que essa rota vai retornar um Bearer Token e o mesmo deve ser salvo
+    //no localstorage para ser usado em chamadas futuras
+    //Com tudo ocorrendo corretamente, o usuário deve ser redirecionado a página principal,com react-router
+    //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
