@@ -9,6 +9,8 @@ const Home = () => {
     //Usando o componente <Card />
   }, []);
 
+
+
   return (
     <>
       <h1>Home</h1>

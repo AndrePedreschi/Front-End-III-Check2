@@ -14,7 +14,7 @@ export function ThemeProvider(props) {
     // Função responsável por Trocar o Tema
     function changeTheme(themeRecieved) {
 
-        if(themeRecieved !== theme) {
+        if (themeRecieved !== theme) {
 
             setTheme(themeRecieved)
             localStorage.setItem('theme', themeRecieved)
@@ -23,11 +23,11 @@ export function ThemeProvider(props) {
 
     }
 
-    return(
+    return (
 
         // Construção dos Elementos para utilizarmos o Contexto em nossa Aplicação, tudo o que for contido no "value" será exportado e poderá ser utilizado em Componentes que utilizarem o Hook Customizado "useTheme"
-        <ThemeContext.Provider value={{theme, changeTheme}}>
-            { props.children }
+        <ThemeContext.Provider value={{ theme, changeTheme }}>
+            {props.children}
         </ThemeContext.Provider>
 
     )
