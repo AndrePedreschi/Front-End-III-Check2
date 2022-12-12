@@ -1,9 +1,11 @@
 import styles from "./Form.module.css";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/auth";
+import { useTheme } from "../hooks/useTheme"
+
 
 const LoginForm = () => {
-
+  const { theme } = useTheme();
   const { authenticated, login } = useContext(AuthContext);
 
   const [loginUser, setLoginUser] = useState("");
@@ -24,9 +26,9 @@ const LoginForm = () => {
       {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
       <div
-        className={`text-center card container ${styles.card}`}
+        className={`text-center card container ${styles.card} ${theme=='dark'?'cardDark':''}`}
       >
-        <div className={`card-body ${styles.CardBody}`}>          
+        <div className={`card-body ${styles.CardBody} `}>          
           <form onSubmit={handleSubmit}>
             <input
               className={`form-control ${styles.inputSpacing}`}

@@ -80,9 +80,14 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "detail/:id",
+        path: "detail/:matricula",
         element: <Detail />,
       },
+      {
+        path: "/dentist/:matricula",
+        element: <Detail />,
+      },
+
     ]
   }
 ])

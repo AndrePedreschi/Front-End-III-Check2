@@ -16,7 +16,6 @@ const Home = () => {
       response => {
         response.json().then(
           dentistasList => {
-            console.log(dentistasList);
             setDentistas(dentistasList)
           }
 
