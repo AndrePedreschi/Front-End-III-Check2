@@ -9,6 +9,9 @@ import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./hooks/useTheme"
+import { redirect } from "react-router-dom";
+
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./contexts/auth";
 
@@ -52,9 +55,21 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
+      /* {
+        path: '',
+        element: <Navigate to='home' />,
+      }, */
+      /* {
+        path: '*',
+        element: <Home />,
+      }, */
       {
         path: '',
-        element: <Navigate to="Login" />,
+        loader: () => redirect('/home')
+      },
+      {
+        path: '*',
+        loader: () => redirect('https://http.cat/404')
       },
       {
         path: "home",
@@ -65,9 +80,14 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "detail/:id",
+        path: "detail/:matricula",
         element: <Detail />,
       },
+      {
+        path: "/dentist/:matricula",
+        element: <Detail />,
+      },
+
     ]
   }
 ])
