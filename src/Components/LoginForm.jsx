@@ -9,29 +9,24 @@ const LoginForm = () => {
   const { auth, saveToken } = useAuth();
   const [loginUser, setLoginUser] = useState("");
   const [password, setPassword] = useState("");
-  const [errorLogin, setLoginUserError] = useState(null)
   const navigate = useNavigate();
 
-  const validar = () => {
-    let error = false;
-    setLoginUserError = false;
-    if (loginUser == null) {
-      setLoginUserError("Preencha o login acima de 5 caracteres")
-      error = true;
-    }
-    return !error;
 
+  const [status, setStatus] = useState({
+    type: '',
+    message: ''
+  })
 
+  const valueLoginUser = {
+    name: loginUser
   }
 
-  const salvar = () => {
-    if (validar()) {
-      console.log('salvou')
-    }
-  }
+  //console.log(valueLoginUser.name);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validate()) return;
 
 
     let bodyDados = {
@@ -69,11 +64,24 @@ const LoginForm = () => {
 
   }
 
+  function validate() {
+    if (valueLoginUser.name === '') {
+      return setStatus({ type: 'error', mensagem: 'Necessario preencher o campo de login' });
+    }
+    if (valueLoginUser.name.length < 5) {
+      return setStatus({ type: 'error', mensagem: 'Campo deve login deve ser maior que 5' });
+    }
+    return true;
+  }
+
   return (
     <>
-      <div
-        className={`text-center card container ${styles.card} ${theme == 'dark' ? 'cardDark' : ''}`}
-      >
+
+      <div className={`text-center card container ${styles.card} ${theme == 'dark' ? 'cardDark' : ''}`}>
+
+        {status.type === 'success' ? <p style={{ color: "green" }}>{status.message}</p> : ""}
+        {status.type === 'error' ? <p style={{ color: "red" }}>{status.message}</p> : ""}
+
         <div className={`card-body ${styles.CardBody} `}>
           <form onSubmit={handleSubmit}>
             <input
@@ -81,19 +89,17 @@ const LoginForm = () => {
               placeholder="Login"
               name="loginUser"
               type="text"
-              required
+
               value={loginUser} onChange={(e) => {
                 setLoginUser(e.target.value)
-                setLoginUserError(null)
               }}
-              errorMessage={errorLogin}
             />
             <input
               className={`form-control ${styles.inputSpacing}`}
               placeholder="Password"
               name="password"
               type="password"
-              required
+
               value={password} onChange={(e) => setPassword(e.target.value)}
 
             />
