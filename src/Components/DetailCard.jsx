@@ -1,24 +1,41 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ScheduleFormModal from "./ScheduleFormModal";
-import styles from "./DetailCard.module.css";
+import "./DetailCard.scss";
+import { useTheme } from "../hooks/useTheme"
 
-const DetailCard = () => {
+const DetailCard = (props) => {
+  const { theme } = useTheme();
+  const [dentistas, setDentistas] = useState({})
+
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api passando o 
     //id do dentista que está vindo do react-router e carregar os dados em algum estado
+    fetch(`https://dhodonto.ctdprojetos.com.br/dentista?matricula=${props.matricula}`).then(
+      response => {
+        response.json().then(
+          dentistasList => {
+            setDentistas({
+              nome:dentistasList.nome,
+              sobrenome: dentistasList.sobrenome,
+              usuario:dentistasList.usuario.username,
+            })
+          }
+        )
+      }
+    )
   }, []);
+
+  //console.log(dentistas.usuario.username);
   return (
     //As instruções que estão com {''} precisam ser 
     //substituídas com as informações que vem da api
     <>
-      <h1>Detail about Dentist {'Nome do Dentista'} </h1>
+      <h1>Detalhes sobre o dentista {dentistas.nome} </h1>
       <section className="card col-sm-12 col-lg-6 container">
         {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
-        <div
-          className={`card-body row`}
-        >
+        <div className={`card-body row  ${theme=='dark'?'cardDark':''}`}>
           <div className="col-sm-12 col-lg-6">
             <img
               className="card-img-top"
@@ -28,12 +45,12 @@ const DetailCard = () => {
           </div>
           <div className="col-sm-12 col-lg-6">
             <ul className="list-group">
-              <li className="list-group-item">Nome: {'Nome do Dentista'}</li>
+              <li className="list-group-item">Nome: {dentistas.nome}</li>
               <li className="list-group-item">
-                Sobrenome: {'Sobrenome do Dentista'}
+                Sobrenome: {dentistas.sobrenome}
               </li>
               <li className="list-group-item">
-                Usuário: {'Nome de usuário do Dentista'}
+                Usuário: {dentistas.usuario}
               </li>
             </ul>
             <div className="text-center">
@@ -42,8 +59,7 @@ const DetailCard = () => {
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                className={`btn btn-light ${styles.button
-                  }`}
+                className={`btn btn-${theme} button `}
               >
                 Marcar consulta
               </button>
