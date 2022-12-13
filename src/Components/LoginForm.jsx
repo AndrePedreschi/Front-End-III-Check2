@@ -63,7 +63,7 @@ const LoginForm = () => {
       }
     ).catch(
       erro => {
-        alert("Senha incorreta. Tente novamente!!")
+        alert("Usuario ou senha não conferem. Tente novamente!!!")
       }
     );
 
