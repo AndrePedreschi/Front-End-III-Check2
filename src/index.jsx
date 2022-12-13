@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -10,13 +10,9 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./hooks/useTheme"
 import { redirect } from "react-router-dom";
-
-
-import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./contexts/auth";
+import { AuthProvider } from "./contexts/auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-//Lembre-se de configurar suas rotas e seu contexto aqui
 
 
 const router = createBrowserRouter([
