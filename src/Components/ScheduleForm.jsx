@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import './ScheduleForm.scss';
 import { useTheme } from "../hooks/useTheme";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/auth";
 
 const ScheduleForm = () => {
   const { theme } = useTheme();
@@ -11,6 +12,7 @@ const ScheduleForm = () => {
   const [pacienteForm, setPacienteForm] = useState('');
   const [dataForm, setDataForm] = useState('');
   const navigate = useNavigate()
+  const { auth } = useAuth()
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
@@ -52,7 +54,7 @@ const ScheduleForm = () => {
     let pacienteFiltro = pacientes.filter((item) => item.matricula == pacienteForm)
     pacienteFiltro = pacienteFiltro[0]
 
-    let tokenJwtusuarioLogado = 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBcGkgREggRWNvbW1lcmNlIiwic3ViIjoiZGVudGlzdGFBZG1pbiIsImlhdCI6MTY3MDgxMTcxNSwiZXhwIjoxNjcwODE1MzE1fQ.t4GFoiePpLdys9uL0xPdZ6_iX3JNvfAAwaSxmeEtQQ4'
+    let tokenJwtusuarioLogado = auth
 
     let bodyDados = {
       "paciente": {

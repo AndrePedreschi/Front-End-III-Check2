@@ -1,15 +1,15 @@
 import styles from "./Form.module.css";
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../contexts/auth";
+import { useAuth } from "../contexts/auth";
 import { useTheme } from "../hooks/useTheme"
-
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const { theme } = useTheme();
-  const { authenticated, login } = useContext(AuthContext);
-
+  const { saveToken } = useAuth();
   const [loginUser, setLoginUser] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     //Nesse handlesubmit você deverá usar o preventDefault,
@@ -20,29 +20,49 @@ const LoginForm = () => {
     //Com tudo ocorrendo corretamente, o usuário deve ser redirecionado a página principal,com react-router
     //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
     e.preventDefault();
-    console.log("submit", { loginUser, password });
-    login(loginUser, password);
+  
+    let bodyDados = {
+      "username": loginUser,
+      "password": password,
+    }
 
-    
+    let dadosRequisicao = {
+      method: 'POST',
+      accept: '*/*',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(bodyDados),
+    };
 
+    fetch(`https://dhodonto.ctdprojetos.com.br/auth`, dadosRequisicao).then(
+      resultado => {
+        if (resultado.status == 200) {
+          return resultado.json();
+        }
+        throw resultado;
+      }
+    ).then(
+      resultado => {
+        saveToken(resultado.token)
+        alert("Usuário logado com sucesso")
+        navigate('/home')
+      }
+    ).catch(
+      erro => {
+        alert("Ocorreu um erro, recarregue a página")
+      }
+    );
 
-    //https://dhodonto.ctdprojetos.com.br/auth
+  }
 
-
-
-
-  };
-
- 
 
   return (
     <>
-      {/* //Na linha seguinte deverá ser feito um teste se a aplicação
-        // está em dark mode e deverá utilizar o css correto */}
       <div
-        className={`text-center card container ${styles.card} ${theme=='dark'?'cardDark':''}`}
+        className={`text-center card container ${styles.card} ${theme == 'dark' ? 'cardDark' : ''}`}
       >
-        <div className={`card-body ${styles.CardBody} `}>          
+        <div className={`card-body ${styles.CardBody} `}>
           <form onSubmit={handleSubmit}>
             <input
               className={`form-control ${styles.inputSpacing}`}
