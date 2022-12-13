@@ -9,42 +9,14 @@ import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "./hooks/useTheme"
+import { redirect } from "react-router-dom";
+
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "./contexts/auth";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 //Lembre-se de configurar suas rotas e seu contexto aqui
-
-/*const Index = () => {
-
-  const [user, setUser] = useState(null);
-  const login = (login, password) => {
-    console.log('login auth', login, password);
-    setUser({ nome: "denstistaAdmin" })
-  }
-
-  const Private = (children) => {
-    const { authenticated, loading } = useContext(AuthContext);
-
-    if (loading) {
-      return <div className="loading">Carregando...</div>
-    }
-
-    if (!authenticated) {
-      return <Navigate to='login' />
-    }
-    return children;
-
-  }
-  return (
-    <AuthProvider>
-      <Routes>
-        <Route exact path='home' element={<Private><Home /></Private>} />
-      </Routes>
-    </AuthProvider>
-  )
-};*/
-
 
 
 const router = createBrowserRouter([
@@ -52,9 +24,21 @@ const router = createBrowserRouter([
     path: "",
     element: <App />,
     children: [
+      /* {
+        path: '',
+        element: <Navigate to='home' />,
+      }, */
+      /* {
+        path: '*',
+        element: <Home />,
+      }, */
       {
         path: '',
-        element: <Navigate to="home" />,
+        loader: () => redirect('/home')
+      },
+      {
+        path: '*',
+        loader: () => redirect('https://http.cat/404')
       },
       {
         path: "home",
@@ -65,9 +49,14 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "detail/:id",
+        path: "detail/:matricula",
         element: <Detail />,
       },
+      {
+        path: "/dentist/:matricula",
+        element: <Detail />,
+      },
+
     ]
   }
 ])
@@ -76,10 +65,10 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider>
-
-      <RouterProvider router={router} />
-
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

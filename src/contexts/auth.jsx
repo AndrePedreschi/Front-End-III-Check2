@@ -1,50 +1,44 @@
-import React, { useState, useEffect, createContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { createContext, useContext } from "react"
 
-export const AuthContext = createContext();
+// Criação do Contexto
+const AuthContext = createContext()
 
-export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
+export function AuthProvider(props) {
 
-  const [user, setUser] = useState(null);
+  const authLocalStorage = localStorage.getItem('auth')
 
-  //referente ao Login do user
-  useEffect(() => {
-    const recoveryUser = localStorage.getItem('user');
 
-    if (recoveryUser) {
-      setUser(JSON.parse(recoveryUser));
+  const [auth, setAuth] = useState(authLocalStorage === null ? '' : authLocalStorage)
+
+  // Função responsavel por salvar o token
+  function saveToken(tokenReceived) {
+
+    if (tokenReceived !== auth) {
+
+      setAuth(tokenReceived)
+      localStorage.setItem('auth', tokenReceived)
+
     }
 
-  }, []);
+  }
 
-  const login = (login, password) => {
-    console.log('login auth', { login, password });
-
-    const loggedUser = {
-      login,
-      password
-    };
-
-    localStorage.setItem('user', JSON.stringify(loggedUser));
-
-    if (password === "dentista123") {
-      setUser(loggedUser)
-      navigate("/home");
-    }
-    //setUser({ login, password })
-
-  };
-
-  /*const logout = () => {
-    console.log('logout');
-    localStorage.removeItem('user');
-    setUser(null);
-    navigate("/login");
-  }*/
   return (
-    <AuthContext.Provider value={{ authenticated: !!user, user, login }}>
-      {children}
+
+    // Construção dos Elementos para utilizarmos o Contexto em nossa Aplicação, tudo o que for contido no "value" será exportado e poderá ser utilizado em Componentes que utilizarem o Hook Customizado "useTheme"
+    <AuthContext.Provider value={{ auth, saveToken }}>
+      {props.children}
     </AuthContext.Provider>
+
   )
+
+}
+
+// Hook Personalizado que irá ser utilizado quando quisermos utilizar alguma das Funcionalidades contidas em nosso Contexto
+export function useAuth() {
+
+  const context = useContext(AuthContext)
+
+  return context
+
 }
