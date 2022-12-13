@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }) => {
     console.log('login auth', { login, password });
 
     const loggedUser = {
-      login: "dentistaAdmin",
-      password: "dentista123"
+      login,
+      password
     };
 
     localStorage.setItem('user', JSON.stringify(loggedUser));
