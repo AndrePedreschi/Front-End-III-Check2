@@ -9,7 +9,26 @@ const LoginForm = () => {
   const { auth, saveToken } = useAuth();
   const [loginUser, setLoginUser] = useState("");
   const [password, setPassword] = useState("");
+  const [errorLogin, setLoginUserError] = useState(null)
   const navigate = useNavigate();
+
+  const validar = () => {
+    let error = false;
+    setLoginUserError = false;
+    if (loginUser == null) {
+      setLoginUserError("Preencha o login acima de 5 caracteres")
+      error = true;
+    }
+    return !error;
+
+
+  }
+
+  const salvar = () => {
+    if (validar()) {
+      console.log('salvou')
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,12 +63,11 @@ const LoginForm = () => {
       }
     ).catch(
       erro => {
-        alert("Ocorreu um erro, recarregue a página")
+        alert("Senha incorreta. Tente novamente!!")
       }
     );
 
   }
-
 
   return (
     <>
@@ -64,7 +82,11 @@ const LoginForm = () => {
               name="loginUser"
               type="text"
               required
-              value={loginUser} onChange={(e) => setLoginUser(e.target.value)}
+              value={loginUser} onChange={(e) => {
+                setLoginUser(e.target.value)
+                setLoginUserError(null)
+              }}
+              errorMessage={errorLogin}
             />
             <input
               className={`form-control ${styles.inputSpacing}`}
