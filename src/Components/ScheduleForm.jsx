@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import './ScheduleForm.scss';
 import { useTheme } from "../hooks/useTheme";
-import { redirect, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleForm = () => {
   const { theme } = useTheme();
@@ -10,6 +10,7 @@ const ScheduleForm = () => {
   const [dentistaForm, setDentistaForm] = useState('');
   const [pacienteForm, setPacienteForm] = useState('');
   const [dataForm, setDataForm] = useState('');
+  const navigate = useNavigate()
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
@@ -95,7 +96,7 @@ const ScheduleForm = () => {
       body: JSON.stringify(bodyDados),
     };
 
-    if (dentistaForm!==undefined || pacienteForm!==undefined || dataForm!==undefined) {
+    if (dentistaForm !== undefined || pacienteForm !== undefined || dataForm !== undefined) {
       fetch(`http://dhodonto.ctdprojetos.com.br/consulta`, dadosRequisicao).then(
         resultado => {
           if (resultado.status == 200) {
@@ -106,13 +107,11 @@ const ScheduleForm = () => {
       ).then(
         resultado => {
           alert("Consulta cadastrada com sucesso!")
-          redirect('/home')
+          navigate('/home')
         }
       ).catch(
         erro => {
           alert("Ocorreu um erro, recarregue a página")
-          console.log("não foi");
-          
         }
       );
 
@@ -191,6 +190,8 @@ const ScheduleForm = () => {
             {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
             <button
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
               className={`btn btn-${theme} button`}
               type="submit"
             >
