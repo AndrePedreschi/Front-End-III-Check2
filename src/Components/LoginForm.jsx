@@ -71,6 +71,9 @@ const LoginForm = () => {
     if (valueLoginUser.loginUser === '') return setStatus({ type: 'error', message: 'Necessario preencher o campo de login' });
     if (valueLoginUser.loginUser.length < 5) return setStatus({ type: 'error', message: 'Login deve ser maior ou igual a que 5' });
     if (valueLoginUser.password === '') return setStatus({ type: 'error', message: 'Necessario preencher o campo senha' });
+    if (valueLoginUser.password.length < 8) return setStatus({ type: 'error', message: 'Tamanho minimo da senha insuficiente' });
+    
+    //apagar o status da mensagen
     setStatus({
       type: '',
       message: ''
