@@ -17,8 +17,11 @@ const LoginForm = () => {
     message: ''
   })
 
+  console.log(status);
+
   const valueLoginUser = {
-    name: loginUser
+    loginUser: loginUser,
+    password: password
   }
 
   //console.log(valueLoginUser.name);
@@ -65,12 +68,13 @@ const LoginForm = () => {
   }
 
   function validate() {
-    if (valueLoginUser.name === '') {
-      return setStatus({ type: 'error', mensagem: 'Necessario preencher o campo de login' });
-    }
-    if (valueLoginUser.name.length < 5) {
-      return setStatus({ type: 'error', mensagem: 'Campo deve login deve ser maior que 5' });
-    }
+    if (valueLoginUser.loginUser === '') return setStatus({ type: 'error', message: 'Necessario preencher o campo de login' });
+    if (valueLoginUser.loginUser.length < 5) return setStatus({ type: 'error', message: 'Login deve ser maior ou igual a que 5' });
+    if (valueLoginUser.password === '') return setStatus({ type: 'error', message: 'Necessario preencher o campo senha' });
+    setStatus({
+      type: '',
+      message: ''
+    })
     return true;
   }
 
@@ -79,8 +83,7 @@ const LoginForm = () => {
 
       <div className={`text-center card container ${styles.card} ${theme == 'dark' ? 'cardDark' : ''}`}>
 
-        {status.type === 'success' ? <p style={{ color: "green" }}>{status.message}</p> : ""}
-        {status.type === 'error' ? <p style={{ color: "red" }}>{status.message}</p> : ""}
+       {status.type === 'error' ? <p style={{ color: "red" }}>{status.message}</p> : ""}
 
         <div className={`card-body ${styles.CardBody} `}>
           <form onSubmit={handleSubmit}>
