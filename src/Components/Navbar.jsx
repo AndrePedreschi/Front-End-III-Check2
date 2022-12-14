@@ -1,12 +1,25 @@
 //import styles from "./Navbar.module.css";
 import './Navibar.scss'
 import { useTheme } from "../hooks/useTheme"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/auth";
+import {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
 
-const Navbar = () => {
+const Navbar = ({history}) => {
 
   const { theme, changeTheme } = useTheme();
+  const navigate = useNavigate();
+ 
+  const isAuth = !localStorage.getItem('auth')
+  //console.log(!isAuth);  
+
+  const logoutUser = () => {
+    localStorage.removeItem('auth');
+    navigate('/home')
+  }
+  
 
   return (
     <header className="sticky-top">
@@ -41,17 +54,26 @@ const Navbar = () => {
                 {/* Ao clicar, o usuário deve ser redirecionado a home, com react-router */}
                 <Link to={'/home'} className={`nav-link`}> Home </Link>
                 
+                
               </li>
               <li className={`nav-item navBarLink`}>
+              
                 {/* Se o usuário estiver logado, deverá aparecer um botão de logout
                 que vai apagar o token do localstorage.
                 Se o usuário estiver deslogado, um link fará um redirecionamento, com react-router,
                 ao formulário de login
                 O botão de logout deverá ser testado darkmode
                 se sim, btn-dark, se não, btn-light */}
-                <a className="nav-link" href="/login">
-                  Login
+                {isAuth ? (
+                   <a className="nav-link btn btn-dark" href="/login">
+                   Login
+                 </a>
+                ) : (
+                  <a className="nav-link btn btn-light" onClick={logoutUser}>
+                  Logout
                 </a>
+                )}               
+
               </li>
               <li className={`nav-item`}>
                 {/* Ao ser clicado, esse botão mudará a aplicação para dark mode ou light mode.
