@@ -11,8 +11,25 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+
+  const [status, setStatus] = useState({
+    type: '',
+    message: ''
+  })
+
+  console.log(status);
+
+  const valueLoginUser = {
+    loginUser: loginUser,
+    password: password
+  }
+
+  //console.log(valueLoginUser.name);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validate()) return;
 
 
     let bodyDados = {
@@ -44,18 +61,33 @@ const LoginForm = () => {
       }
     ).catch(
       erro => {
-        alert("Ocorreu um erro, recarregue a página")
+        alert("Usuario ou senha não conferem. Tente novamente!!!")
       }
     );
 
   }
 
+  function validate() {
+    if (valueLoginUser.loginUser === '') return setStatus({ type: 'error', message: 'Necessario preencher o campo de login' });
+    if (valueLoginUser.loginUser.length < 5) return setStatus({ type: 'error', message: 'Login deve ser maior ou igual a que 5' });
+    if (valueLoginUser.password === '') return setStatus({ type: 'error', message: 'Necessario preencher o campo senha' });
+    if (valueLoginUser.password.length < 8) return setStatus({ type: 'error', message: 'Tamanho minimo da senha insuficiente' });
+    
+    //apagar o status da mensagen
+    setStatus({
+      type: '',
+      message: ''
+    })
+    return true;
+  }
 
   return (
     <>
-      <div
-        className={`text-center card container ${styles.card} ${theme == 'dark' ? 'cardDark' : ''}`}
-      >
+
+      <div className={`text-center card container ${styles.card} ${theme == 'dark' ? 'cardDark' : ''}`}>
+
+       {status.type === 'error' ? <p style={{ color: "red" }}>{status.message}</p> : ""}
+
         <div className={`card-body ${styles.CardBody} `}>
           <form onSubmit={handleSubmit}>
             <input
@@ -63,15 +95,17 @@ const LoginForm = () => {
               placeholder="Login"
               name="loginUser"
               type="text"
-              required
-              value={loginUser} onChange={(e) => setLoginUser(e.target.value)}
+
+              value={loginUser} onChange={(e) => {
+                setLoginUser(e.target.value)
+              }}
             />
             <input
               className={`form-control ${styles.inputSpacing}`}
               placeholder="Password"
               name="password"
               type="password"
-              required
+
               value={password} onChange={(e) => setPassword(e.target.value)}
 
             />

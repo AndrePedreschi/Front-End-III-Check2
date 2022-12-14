@@ -25,7 +25,6 @@ export function AuthProvider(props) {
 
   return (
 
-    // Construção dos Elementos para utilizarmos o Contexto em nossa Aplicação, tudo o que for contido no "value" será exportado e poderá ser utilizado em Componentes que utilizarem o Hook Customizado "useTheme"
     <AuthContext.Provider value={{ auth, saveToken }}>
       {props.children}
     </AuthContext.Provider>
@@ -34,7 +33,6 @@ export function AuthProvider(props) {
 
 }
 
-// Hook Personalizado que irá ser utilizado quando quisermos utilizar alguma das Funcionalidades contidas em nosso Contexto
 export function useAuth() {
 
   const context = useContext(AuthContext)

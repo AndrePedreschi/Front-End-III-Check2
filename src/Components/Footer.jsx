@@ -30,6 +30,7 @@ const Footer = () => {
                 <img src="/images/ico-instagram.png" alt="ícone do instagram" className={`icon`} />
                 <img src="/images/ico-whatsapp.png" alt="ícone do whatsapp" className={`icon`} />
                 <img src="/images/ico-tiktok.png" alt="ícone do tiktok" className={`icon`} />
+                <a href="https://github.com/AndrePedreschi/Front-End-III-Check2"><img src="/images/ico-github.png" alt="ícone do github" className={`icon`} /></a>
               </div>
             </div>
           </div>
