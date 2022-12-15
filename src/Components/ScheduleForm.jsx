@@ -108,7 +108,7 @@ const ScheduleForm = () => {
       body: JSON.stringify(bodyDados),
     };
 
-    fetch(`http://dhodonto.ctdprojetos.com.br/consulta`, dadosRequisicao).then(
+    fetch(`https://dhodonto.ctdprojetos.com.br/consulta`, dadosRequisicao).then(
       resultado => {
         if (resultado.status == 200) {
           return resultado.json();
