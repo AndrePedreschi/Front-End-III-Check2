@@ -1,25 +1,23 @@
 //import styles from "./Navbar.module.css";
 import './Navibar.scss'
-import { useTheme } from "../hooks/useTheme"
-import { Link, Navigate } from "react-router-dom";
+import { useTheme } from "../contexts/useTheme"
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/auth";
-import {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 
 
-const Navbar = ({history}) => {
+const Navbar = ({ history }) => {
 
   const { theme, changeTheme } = useTheme();
   const navigate = useNavigate();
- 
-  const isAuth = !localStorage.getItem('auth')
-  //console.log(!isAuth);  
+  const { auth, saveToken } = useAuth();
 
   const logoutUser = () => {
     localStorage.removeItem('auth');
+    saveToken('')
     navigate('/home')
   }
-  
+
 
   return (
     <header className="sticky-top">
@@ -53,18 +51,18 @@ const Navbar = ({history}) => {
               <li className={`nav-item navBarLink`}>
                 {/* Ao clicar, o usuário deve ser redirecionado a home, com react-router */}
                 <Link to={'/home'} className={`nav-link`}> Home </Link>
-                
-                
+
+
               </li>
               <li className={`nav-item navBarLink`}>
-              
+
                 {/* Se o usuário estiver logado, deverá aparecer um botão de logout
                 que vai apagar o token do localstorage.
                 Se o usuário estiver deslogado, um link fará um redirecionamento, com react-router,
                 ao formulário de login
                 O botão de logout deverá ser testado darkmode
                 se sim, btn-dark, se não, btn-light */}
-                {isAuth ? (
+                {/* {!auth ? (
                    <a className={`nav-link btn btn-${theme}`} href="/login">
                    Login
                  </a>
@@ -72,7 +70,14 @@ const Navbar = ({history}) => {
                   <a className={`nav-link btn btn-${theme}`} onClick={logoutUser}>
                   Logout
                 </a>
-                )}               
+                )}  */}
+                {!auth ? (
+                  <Link to={'/login'} className={`nav-link btn btn-${theme}`}>Login</Link>
+                ) : (
+
+                  <Link to={'/home'} onClick={logoutUser} className={`nav-link btn btn-${theme}`}>Logout</Link>
+                  
+                )}
 
               </li>
               <li className={`nav-item`}>

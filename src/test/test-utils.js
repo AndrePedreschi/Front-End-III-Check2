@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react"
 import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom"
-import { ThemeProvider } from "../hooks/useTheme"
+import { ThemeProvider } from "../contexts/useTheme"
 import { AuthProvider } from "../contexts/auth"
 
 //import { ContextProvider } from "../Components/utils/global.context"

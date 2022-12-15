@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import ScheduleFormModal from "./ScheduleFormModal";
 import "./DetailCard.scss";
-import { useTheme } from "../hooks/useTheme"
+import { useTheme } from "../contexts/useTheme"
+import { useAuth } from '../contexts/auth';
+import { useNavigate } from "react-router-dom";
 
 const DetailCard = (props) => {
   const { theme } = useTheme();
   const [dentistas, setDentistas] = useState({})
-
+  const { auth } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api passando o 
@@ -16,9 +19,9 @@ const DetailCard = (props) => {
         response.json().then(
           dentistasList => {
             setDentistas({
-              nome:dentistasList.nome,
+              nome: dentistasList.nome,
               sobrenome: dentistasList.sobrenome,
-              usuario:dentistasList.usuario.username,
+              usuario: dentistasList.usuario.username,
             })
           }
         )
@@ -26,7 +29,14 @@ const DetailCard = (props) => {
     )
   }, []);
 
-  //console.log(dentistas.usuario.username);
+  function validarLogin(){
+    if (!auth) {
+      alert("Realize o login antes de cadastrar uma consulta!")
+      navigate(`/Login`)
+    }
+  };
+
+
   return (
     //As instruções que estão com {''} precisam ser 
     //substituídas com as informações que vem da api
@@ -35,7 +45,7 @@ const DetailCard = (props) => {
       <section className="card col-sm-12 col-lg-6 container">
         {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
-        <div className={`card-body row  ${theme=='dark'?'cardDark':''}`}>
+        <div className={`card-body row  ${theme == 'dark' ? 'cardDark' : ''}`}>
           <div className="col-sm-12 col-lg-6">
             <img
               className="card-img-top"
@@ -56,13 +66,15 @@ const DetailCard = (props) => {
             <div className="text-center">
               {/* //Na linha seguinte deverá ser feito um teste se a aplicação
               // está em dark mode e deverá utilizado o css correto */}
-              <button
+              {auth?<button
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
                 className={`btn btn-${theme} button `}
-              >
-                Marcar consulta
-              </button>
+              >Marcar consulta</button>:
+              <button
+                onClick={validarLogin}
+                className={`btn btn-${theme} button `}
+              >Marcar consulta</button>}
             </div>
           </div>
         </div>

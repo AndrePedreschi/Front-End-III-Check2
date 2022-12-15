@@ -8,7 +8,7 @@ import Detail from "./Routes/Detail";
 import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ThemeProvider } from "./hooks/useTheme"
+import { ThemeProvider } from "./contexts/useTheme"
 import { redirect } from "react-router-dom";
 import { AuthProvider } from "./contexts/auth";
 

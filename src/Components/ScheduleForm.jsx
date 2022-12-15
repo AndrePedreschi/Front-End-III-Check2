@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import './ScheduleForm.scss';
-import { useTheme } from "../hooks/useTheme";
+import { useTheme } from "../contexts/useTheme";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/auth";
 
@@ -21,7 +21,6 @@ const ScheduleForm = () => {
       response => {
         response.json().then(
           dentistasList => {
-            console.log(dentistasList);
             setDentistas(dentistasList)
           }
         )
@@ -32,13 +31,15 @@ const ScheduleForm = () => {
       response => {
         response.json().then(
           pacientesList => {
-            console.log(pacientesList.body);
             setPacientes(pacientesList.body)
           }
         )
       }
     )
   }, []);
+
+  
+
 
   const handleSubmit = (event) => {
     //Nesse handlesubmit você deverá usar o preventDefault,
@@ -47,14 +48,23 @@ const ScheduleForm = () => {
     //lembre-se que essa rota precisa de um Bearer Token para funcionar.
     //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
     event.preventDefault();
+    let tokenJwtusuarioLogado = auth
+
+    if (dentistaForm == '') {
+      return alert("Selecione um dentista")
+    }
+    if (pacienteForm == '') {
+      return alert("Selecione um paciente")
+    }
+    if (dataForm == '') {
+      return alert("Selecione uma data e horário")
+    }
 
     let dentistaFiltro = dentistas.filter((item) => item.matricula == dentistaForm)
     dentistaFiltro = dentistaFiltro[0]
 
     let pacienteFiltro = pacientes.filter((item) => item.matricula == pacienteForm)
     pacienteFiltro = pacienteFiltro[0]
-
-    let tokenJwtusuarioLogado = auth
 
     let bodyDados = {
       "paciente": {
@@ -98,29 +108,29 @@ const ScheduleForm = () => {
       body: JSON.stringify(bodyDados),
     };
 
-    if (dentistaForm !== undefined || pacienteForm !== undefined || dataForm !== undefined) {
-      fetch(`http://dhodonto.ctdprojetos.com.br/consulta`, dadosRequisicao).then(
-        resultado => {
-          if (resultado.status == 200) {
-            return resultado.json();
-          }
-          throw resultado;
+    fetch(`http://dhodonto.ctdprojetos.com.br/consulta`, dadosRequisicao).then(
+      resultado => {
+        if (resultado.status == 200) {
+          return resultado.json();
         }
-      ).then(
-        resultado => {
-          alert("Consulta cadastrada com sucesso!")
-          navigate('/home')
-        }
-      ).catch(
-        erro => {
-          alert("Ocorreu um erro, recarregue a página")
-        }
-      );
+        throw resultado;
+      }
+    ).then(
+      resultado => {
+        alert("Consulta cadastrada com sucesso!")
+        navigate('/home')
+      }
+    ).catch(
+      erro => {
+        if (erro.status == 403) {
+          alert("Faça login!")
+          navigate(`/dentist/${dentistaForm}`)
 
-    } else {
-      alert("Preencha o dados para agendar uma consulta!")
-      return
-    }
+        }
+      }
+    );
+
+
   };
 
   return (
@@ -142,7 +152,7 @@ const ScheduleForm = () => {
                 value={dentistaForm}
               >
                 {/*Aqui deve ser feito um map para listar todos os dentistas*/}
-
+                <option defaultValue={0} aria-checked={true} >Selecione um dentista </option>
                 {dentistas.map((itens) => (
                   <option key={itens.matricula} value={itens.matricula}>
                     {`${itens.nome} ${itens.sobrenome}`}
@@ -164,6 +174,7 @@ const ScheduleForm = () => {
                 value={pacienteForm}
               >
                 {/*Aqui deve ser feito um map para listar todos os pacientes*/}
+                <option value={0} aria-checked={true} >Selecione um paciente </option>
                 {pacientes.map((itens) => (
                   <option key={itens.matricula} value={itens.matricula}>
                     {`${itens.nome} ${itens.sobrenome}`}
