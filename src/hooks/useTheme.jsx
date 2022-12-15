@@ -2,7 +2,7 @@ import { useState } from "react"
 import { createContext, useContext } from "react"
 
 // Criação do Contexto
-const ThemeContext = createContext('')
+const ThemeContext = createContext()
 
 // Criação do Provedor para o Contexto
 export function ThemeProvider(props) {
