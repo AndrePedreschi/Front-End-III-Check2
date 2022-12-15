@@ -65,11 +65,11 @@ const Navbar = ({history}) => {
                 O botão de logout deverá ser testado darkmode
                 se sim, btn-dark, se não, btn-light */}
                 {isAuth ? (
-                   <a className="nav-link btn btn-dark" href="/login">
+                   <a className={`nav-link btn btn-${theme}`} href="/login">
                    Login
                  </a>
                 ) : (
-                  <a className="nav-link btn btn-light" onClick={logoutUser}>
+                  <a className={`nav-link btn btn-${theme}`} onClick={logoutUser}>
                   Logout
                 </a>
                 )}               

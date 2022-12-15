@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import './ScheduleForm.scss';
 import { useTheme } from "../hooks/useTheme";
-import { redirect, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/auth";
 
 const ScheduleForm = () => {
   const { theme } = useTheme();
@@ -10,6 +11,8 @@ const ScheduleForm = () => {
   const [dentistaForm, setDentistaForm] = useState('');
   const [pacienteForm, setPacienteForm] = useState('');
   const [dataForm, setDataForm] = useState('');
+  const navigate = useNavigate()
+  const { auth } = useAuth()
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
@@ -51,7 +54,7 @@ const ScheduleForm = () => {
     let pacienteFiltro = pacientes.filter((item) => item.matricula == pacienteForm)
     pacienteFiltro = pacienteFiltro[0]
 
-    let tokenJwtusuarioLogado = 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBcGkgREggRWNvbW1lcmNlIiwic3ViIjoiZGVudGlzdGFBZG1pbiIsImlhdCI6MTY3MDgxMTcxNSwiZXhwIjoxNjcwODE1MzE1fQ.t4GFoiePpLdys9uL0xPdZ6_iX3JNvfAAwaSxmeEtQQ4'
+    let tokenJwtusuarioLogado = auth
 
     let bodyDados = {
       "paciente": {
@@ -95,7 +98,7 @@ const ScheduleForm = () => {
       body: JSON.stringify(bodyDados),
     };
 
-    if (dentistaForm!==undefined || pacienteForm!==undefined || dataForm!==undefined) {
+    if (dentistaForm !== undefined || pacienteForm !== undefined || dataForm !== undefined) {
       fetch(`http://dhodonto.ctdprojetos.com.br/consulta`, dadosRequisicao).then(
         resultado => {
           if (resultado.status == 200) {
@@ -106,13 +109,11 @@ const ScheduleForm = () => {
       ).then(
         resultado => {
           alert("Consulta cadastrada com sucesso!")
-          redirect('/home')
+          navigate('/home')
         }
       ).catch(
         erro => {
           alert("Ocorreu um erro, recarregue a página")
-          console.log("não foi");
-          
         }
       );
 
@@ -191,6 +192,8 @@ const ScheduleForm = () => {
             {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
             <button
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
               className={`btn btn-${theme} button`}
               type="submit"
             >
