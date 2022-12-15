@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import { useTheme } from "./hooks/useTheme"
+import { useTheme } from "./contexts/useTheme"
 
 
 function App() {

@@ -1,7 +1,7 @@
 import styles from "./Form.module.css";
 import React, { useState } from "react";
 import { useAuth } from "../contexts/auth";
-import { useTheme } from "../hooks/useTheme"
+import { useTheme } from "../contexts/useTheme"
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -17,14 +17,10 @@ const LoginForm = () => {
     message: ''
   })
 
-  console.log(status);
-
   const valueLoginUser = {
     loginUser: loginUser,
     password: password
   }
-
-  //console.log(valueLoginUser.name);
 
   const handleSubmit = (e) => {
     //Nesse handlesubmit você deverá usar o preventDefault,
